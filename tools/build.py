@@ -104,7 +104,7 @@ T = "Python sprint (deadline 10 Oct)"
 add(D(2026,9,24),P,T,"Full","", "2-4 BigBinary ch 12 While loop, ch 13 Challenges II","5-7 BigBinary ch 14 Comments, ch 15 Functions","Sprint starts. BigBinary at 41%.",4)
 add(D(2026,9,25),P,T,"Full","BigBinary ch 16 Function arguments, ch 17 Lambdas","Prep for this week's 100x class","6-8 "+x_topic(D(2026,9,25)),"",6)
 add(D(2026,9,26),P,T,"Weekend","BigBinary ch 18 Strings, ch 19 More about lists","GenAI 00: Course setup (environment, Azure OpenAI or Foundry key) + GenAI 01: Intro to GenAI","6-8 "+x_topic(D(2026,9,26)),"",6)
-add(D(2026,9,27),P,T,"Weekend","BigBinary ch 20 Handling exceptions, ch 21 Collections","GenAI 02: Exploring and comparing LLMs","3:00-3:30 Weekly review","",4.5)
+add(D(2026,9,27),P,T,"Weekend","BigBinary ch 20 Handling exceptions, ch 21 Collections","GenAI 02: Exploring and comparing LLMs","4:00-4:30 Weekly review","",4.5)
 add(D(2026,9,28),P,T,"Full","BigBinary ch 24 Classes and objects","GenAI 03: Responsible AI + GenAI 04: Prompt engineering fundamentals","BigBinary ch 22 datetime, ch 25 Inheritance","",6)
 add(D(2026,9,29),P,T,"Full","BigBinary ch 23 Decorators, ch 28 More about decorators","GenAI 05: Advanced prompts","BigBinary ch 27 Generators, ch 31 Iterators","",6)
 add(D(2026,9,30),P,T,"Light","BigBinary ch 30 Raising exceptions; revisit weak chapters","2-3 Playground drills","Reserve: catch-up, else an ai-weekend-builds project","Core BigBinary chapters done",3)

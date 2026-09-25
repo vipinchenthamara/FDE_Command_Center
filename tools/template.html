@@ -355,6 +355,52 @@ table.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
   .opp{grid-template-columns:minmax(0,1fr)}
   .upnext{flex-wrap:wrap}
 }
+/* tasks: list + board */
+.tkbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.tkbar .grow{flex:1}
+.tksearch{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 12px;min-width:220px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:13px;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--dark);border-color:var(--dark);color:var(--on-dark)}
+.chip small{font-size:11.5px;opacity:.7}
+.sdot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.sd-ik{background:#3F51B5}.sd-x100{background:#E67C4A}.sd-ms{background:#039BE5}.sd-py{background:#33B679}.sd-ship{background:#0B8043}.sd-review{background:#8E24AA}
+.tksum{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13.5px;color:var(--ink-2);margin:-4px 0 16px}
+.tksum b{color:var(--ink)}
+.wkh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:18px 0 6px;border-bottom:1px solid var(--line)}
+.wkh:first-child{padding-top:0}
+.wkh h3{font-size:15px}
+.wkh span{font-size:12.5px;color:var(--muted)}
+.wkh .tag{margin-left:auto}
+.trow{display:grid;grid-template-columns:22px 104px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-2)}
+.trow .when{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.35}
+.trow .when b{display:block;color:var(--ink-2);font-weight:500;font-size:13px}
+.trow .tt b{display:block;font-size:14px;font-weight:600;line-height:1.3}
+.trow .tt b a{text-decoration:none}.trow .tt b a:hover{text-decoration:underline}
+.trow .tt small{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);margin-top:3px}
+.trow.done .tt b{text-decoration:line-through;color:var(--muted)}
+.trow .acts{display:flex;gap:2px}
+.board{display:grid;grid-template-columns:repeat(6,minmax(180px,1fr));gap:12px;overflow-x:auto;padding-bottom:8px;align-items:start}
+.kcol{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:10px;min-height:120px;display:flex;flex-direction:column;gap:8px}
+.kcol.over{outline:2px dashed var(--green);outline-offset:-4px}
+.kcol h3{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;padding:2px 4px 4px}
+.kcol h3 span{margin-left:auto;font-weight:500;color:var(--muted);font-size:12px}
+.kcol .hint{font-size:12px;color:var(--faint);padding:2px 4px}
+.kcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 11px;display:flex;flex-direction:column;gap:6px;cursor:grab}
+.kcard:active{cursor:grabbing}
+.kcard.dragging{opacity:.4}
+.kcard .kt{font-size:13.5px;font-weight:600;line-height:1.3}
+.kcard .kt a{text-decoration:none}.kcard .kt a:hover{text-decoration:underline}
+.kcard .km{display:flex;align-items:flex-start;gap:6px;font-size:12px;color:var(--muted);line-height:1.4}
+.kcard .km .sdot{margin-top:4px}
+.kcard .kf{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kcard .kf .grow{flex:1}
+.kcard.done .kt{text-decoration:line-through;color:var(--muted)}
+.kmore{border:0;background:none;font-size:12.5px;color:var(--green-ink);padding:4px;text-align:left}
+.xbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 9px;font-size:12px;color:var(--ink-2)}
+.xbtn:hover{border-color:var(--green);color:var(--green-ink)}
+.ahead{margin-top:10px}
+@media (max-width:760px){ .trow{grid-template-columns:22px minmax(0,1fr) auto} .trow .when{grid-column:2;grid-row:1} .trow .tt{grid-column:2;grid-row:2} .trow .acts{grid-column:3;grid-row:1/3} .tksearch{min-width:0;width:100%} .board{grid-template-columns:repeat(6,minmax(240px,82vw));scroll-snap-type:x mandatory} .kcol{scroll-snap-align:start} }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -363,6 +409,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
     <div class="logo" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32"><rect x="1" y="3" width="12" height="12" rx="2" fill="#7FD3A2" transform="rotate(-8 7 9)"/><rect x="17" y="1" width="13" height="13" rx="2" fill="#B5E6C8"/><rect x="2" y="17" width="12" height="13" rx="2" fill="#4DB77E"/><rect x="17" y="17" width="13" height="13" rx="2" fill="#17231D"/></svg></div>
     <button class="nav" data-view="today" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="6.5" height="7.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="4.5" rx="1.5"/><rect x="4" y="14.5" width="6.5" height="5.5" rx="1.5"/><rect x="13.5" y="11.5" width="6.5" height="8.5" rx="1.5"/></svg>Today</button>
     <button class="nav" data-view="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17M8 14h1M12 14h1M16 14h1M8 17h1M12 17h1"/></svg>Plan</button>
+    <button class="nav" data-view="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="16.5" y="4" width="4" height="7" rx="1.5"/></svg>Tasks</button>
     <button class="nav" data-view="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></svg>Practice</button>
     <button class="nav" data-view="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3.5l8.5 4.5-8.5 4.5L3.5 8z"/><path d="M3.5 12l8.5 4.5 8.5-4.5M3.5 16l8.5 4.5 8.5-4.5"/></svg>Projects</button>
     <button class="nav" data-view="career"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3.5 12.5h17"/></svg>Career</button>
@@ -424,6 +471,15 @@ table.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
         <div class="card"><div class="ch"><h2 class="grow">Week by week</h2></div><div class="tscroll" id="roadTable"></div></div>
       </div>
       <div id="tab-sources" hidden><div class="srcs" id="srcs"></div></div>
+    </section>
+
+    <!-- TASKS -->
+    <section class="view" id="view-tasks" hidden>
+      <div class="ph"><div><div class="date" data-slot="date"></div><h1>Every task in the plan, in one place.</h1><p>Tick anything the day you do it, even if it was planned for another day.</p></div></div>
+      <div class="tabs" role="tablist"><button role="tab" data-act="tk-tab" data-tab="list" aria-selected="true">List</button><button role="tab" data-act="tk-tab" data-tab="board" aria-selected="false">Board</button></div>
+      <div class="tkbar"><div class="chips" id="tkChips"></div><span class="grow"></span><div class="seg" role="group" aria-label="Show" id="tkStatus"></div><label style="position:absolute;left:-9999px" for="tkQ">Search tasks</label><input class="tksearch" id="tkQ" type="search" placeholder="Search, e.g. python, RAG, ch 24" autocomplete="off"></div>
+      <div class="tksum" id="tkSum"></div>
+      <div id="tkBody"></div>
     </section>
 
     <!-- PRACTICE -->
@@ -593,7 +649,7 @@ const PREP = [
 const OPP_STAGES = ["Shortlist","Outreach","Applied","Interviewing","Offer","Closed"];
 
 /* ===== state + storage ===== */
-const S = { done:{}, sessions:{}, proj:{}, py:{}, skills:{ratings:{}, history:[]}, counters:{dsa:0, mocks:0, apps:0}, reviews:{}, travel:{}, snippets:[], pomo:{focus:25, short:5, long:15}, drills:{}, checkins:{}, opps:{}, prep:{} };
+const S = { done:{}, doing:{}, sessions:{}, proj:{}, py:{}, skills:{ratings:{}, history:[]}, counters:{dsa:0, mocks:0, apps:0}, reviews:{}, travel:{}, snippets:[], pomo:{focus:25, short:5, long:15}, drills:{}, checkins:{}, opps:{}, prep:{} };
 let DB = null;
 const writeQ = {};
 function setSync(st){ /* status text comes from the GitHub sync store */ }
@@ -697,6 +753,7 @@ function checklist(ds, eyebrow){
       ${ciOpen ? `<form class="form" id="ciForm"><label class="field">Today I will…<input name="intention" value="${esc(ci.intention || "")}" placeholder="e.g. finish ch 15-16 and pass two drills" required></label><div style="display:flex;gap:8px"><button class="btn dark sm" type="submit">Save check-in</button><button class="btn sm" type="button" data-act="checkin-open">Cancel</button></div></form>` : ""}
       ${rows || `<div class="row"><span></span><span></span><span class="tt"><b>Day off</b><small>No work planned. Enjoy it.</small></span><span></span></div>`}
     </div>
+    ${(() => { const ah = doneAheadOn(ds); return ah.length ? `<div class="ahead"><div class="eyebrow" style="margin-bottom:2px">Also done this day, from other dates</div><div class="rows">${ah.map(f => `<div class="row done"><button class="cb" data-act="toggle-done" data-id="${f.b.id}" aria-pressed="true" aria-label="Mark not done">${I.check}</button><span class="t">${fmtShort(parse(f.ds))}</span><span class="tt"><b>${esc(f.b.t)}</b><small>${KN[f.b.k]} · ${fmtHrs(f.b.h)} h · planned ${fmtD(parse(f.ds))}</small></span><span></span></div>`).join("")}</div></div>` : ""; })()}
     ${res.length ? `<details class="more"><summary>${res.length} reserve slot${res.length > 1 ? "s" : ""}</summary><div class="rows">${res.map(b => `<div class="row"><span></span><span class="t">${fmtH(b.s)}–${fmtH(b.e)}</span><span class="tt"><b>${esc(b.t)}</b><small>Empty unless travel pushes work here. Otherwise an ai-weekend-builds project, or rest.</small></span><span></span></div>`).join("")}</div></details>` : ""}
     <div class="foot"><button class="link" data-act="reflect-open">${I.journal} Reflect &amp; record hours${ci.reflection ? " (saved)" : ""}</button>${canTravel ? `<button class="switch" data-act="travel" data-date="${ds}" aria-pressed="${!!S.travel[ds]}"><i></i>Travel day</button>` : ""}</div>
     ${rfOpen ? `<form class="form" id="rfForm"><label class="field">What did you learn or ship?<textarea name="reflection">${esc(ci.reflection || "")}</textarea></label><div class="frow"><label class="field">Extra study hours outside the blocks<input name="extra" type="number" min="0" max="12" step="0.5" value="${ci.extra || 0}"></label><label class="field">Where did you get stuck?<input name="stuck" value="${esc(ci.stuck || "")}"></label></div><div style="display:flex;gap:8px"><button class="btn dark sm" type="submit">Save reflection</button><button class="btn sm" type="button" data-act="reflect-open">Cancel</button></div></form>` : ""}`;
@@ -724,7 +781,7 @@ function renderToday(){
   $("#todayStats").innerHTML = `
     <div class="card stat"><span class="si">${I.target}</span><div><b>${days}</b><span>days to applications</span><small>1 Mar 2027</small></div></div>
     <div class="card stat"><span class="si">${I.clock}</span><div style="flex:1"><b>${fmtHrs(wk.done)} / ${fmtHrs(wk.planned)}</b><span>hours this week</span><div class="bar"><i style="width:${wk.planned ? wk.done/wk.planned*100 : 0}%"></i></div></div></div>
-    <div class="card stat"><span class="si">${I.tick}</span><div><b>${tdone} / ${tb.length}</b><span>today's blocks complete</span><small>${allDone} completed across your plan</small></div></div>`;
+    <div class="card stat"><span class="si">${I.tick}</span><div><b>${tdone} / ${tb.length}</b><span>today's blocks complete</span><small>${allDone} completed across your plan · <button class="link" data-view-go="tasks" style="font-size:inherit">see all tasks</button></small></div></div>`;
   $("#todayChecklist").innerHTML = checklist(UI.sel, UI.sel === td ? "Today's checklist" : "Checklist");
   const al = buildAlerts();
   $("#dueList").innerHTML = al.length ? al.slice(0, 6).map(a => `<button class="li" ${a.act}><span><b>${esc(a.t)}</b><small>${esc(a.s)}</small></span><span class="r"><span class="tag ${a.tag}">${a.lab}</span> ${esc(a.r)}</span>${I.chev}</button>`).join("") : `<div class="empty">Nothing due in the next few days.</div>`;
@@ -1008,17 +1065,106 @@ function openDrawer(id){
   $("#drawer").dataset.id = id;
   $("#drawer").innerHTML = `<div style="display:flex;align-items:center;gap:8px"><span class="tag g">${kindLabel(b)} · ${KN[b.k]}</span><span style="flex:1"></span><button class="ibtn" data-act="close-drawer" aria-label="Close">${I.x}</button></div><h3>${esc(b.t)}</h3>
     <dl><dt>When</dt><dd>${fmtD(parse(ds))} · ${fmtH(b.s)}–${fmtH(b.e)} IST</dd><dt>Week</dt><dd>${esc(day.th)}</dd><dt>Day</dt><dd>${esc(dayType(ds))}</dd>${countable(b) ? `<dt>Hours</dt><dd>${fmtHrs(b.h)}</dd>` : ""}${day.n ? `<dt>Note</dt><dd>${esc(day.n)}</dd>` : ""}</dl>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">${b.u ? `<a class="btn dark sm" href="${esc(b.u)}" target="_blank" rel="noopener">Open source ${I.ext}</a>` : ""}${countable(b) ? `<button class="btn sm" data-act="toggle-done" data-id="${b.id}">${done ? "Mark not done" : "Mark done"}</button><button class="btn sm" data-act="start-focus" data-id="${b.id}">${I.play} Focus on this</button>` : ""}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${b.u ? `<a class="btn dark sm" href="${esc(b.u)}" target="_blank" rel="noopener">Open source ${I.ext}</a>` : ""}${countable(b) && !done ? `<button class="btn sm" data-act="tk-doing" data-id="${b.id}">${S.doing[b.id] ? "Pause" : "Start"}</button>` : ""}${countable(b) ? `<button class="btn sm" data-act="toggle-done" data-id="${b.id}">${done ? "Mark not done" : "Mark done"}</button><button class="btn sm" data-act="start-focus" data-id="${b.id}">${I.play} Focus on this</button>` : ""}</div>
     ${b.k === "reserve" ? `<p class="sub">Empty unless a travel day pushes work here. Otherwise use it for an ai-weekend-builds project, or rest.</p>` : ""}`;
   $("#drawer").hidden = false; $("#scrim").hidden = false; $("#drawer").querySelector("button").focus();
 }
 const closeDrawer = () => { $("#drawer").hidden = true; $("#scrim").hidden = true; };
 
+
+/* ===== TASKS (list + board) ===== */
+const TK = {tab:"list", k:"all", st:"all", q:"", more:{}, scrolled:false};
+try { const t = localStorage.getItem("cc4.tk"); if (t){ const o = JSON.parse(t); TK.tab = o.tab || "list"; TK.k = o.k || "all"; TK.st = o.st || "all"; } } catch(e){}
+const tkSave = () => { try { localStorage.setItem("cc4.tk", JSON.stringify({tab:TK.tab, k:TK.k, st:TK.st})); } catch(e){} };
+const TK_STREAMS = ["ik","x100","ms","py","ship","review"];
+const doneDate = id => { const v = S.done[id]; if (!v) return null; if (typeof v !== "string") return null; const d = new Date(v); return isNaN(d) ? null : iso(d); };
+function doneAheadOn(ds){ return Object.keys(S.done).filter(id => doneDate(id) === ds && id.slice(0, 10) !== ds).map(findBlock).filter(Boolean); }
+function taskItems(){ return allBlocks().filter(([ds, b]) => countable(b)).map(([ds, b]) => ({ds, b, done:!!S.done[b.id], doing:!!S.doing[b.id] && !S.done[b.id], past:isPast(ds, b)})); }
+function tkMatch(x){
+  if (TK.k !== "all" && x.b.k !== TK.k) return false;
+  if (TK.q){ const q = TK.q.toLowerCase(); if (!(x.b.t + " " + KN[x.b.k] + " " + (DAYMAP[x.ds].th || "")).toLowerCase().includes(q)) return false; }
+  return true;
+}
+function tkBadge(x){
+  if (x.done){ const dd = doneDate(x.b.id); if (!dd) return `<span class="tag g">Done</span>`;
+    const diff = Math.round((parse(x.ds) - parse(dd)) / 864e5);
+    return `<span class="tag g">Done ${fmtShort(parse(dd))}${diff > 0 ? ` · ${diff} day${diff > 1 ? "s" : ""} early` : diff < 0 ? ` · ${-diff} day${diff < -1 ? "s" : ""} late` : ""}</span>`; }
+  if (x.doing) return `<span class="tag a">In progress</span>`;
+  if (x.past) return `<span class="tag r">Overdue</span>`;
+  return "";
+}
+const tkLink = b => b.u ? `<a href="${esc(b.u)}" target="_blank" rel="noopener" draggable="false">${esc(b.t)}</a>` : esc(b.t);
+function renderTasksBar(all){
+  $$("#view-tasks [data-act='tk-tab']").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === TK.tab));
+  const cnt = k => { const xs = all.filter(x => k === "all" || x.b.k === k); return `<small>${xs.filter(x => x.done).length}/${xs.length}</small>`; };
+  $("#tkChips").innerHTML = [["all","All"]].concat(TK_STREAMS.map(k => [k, KN[k]])).map(([k, n]) => `<button class="chip" data-act="tk-k" data-k="${k}" aria-pressed="${TK.k === k}">${k !== "all" ? `<i class="sdot sd-${k}"></i>` : ""}${esc(n)} ${cnt(k)}</button>`).join("");
+  $("#tkStatus").innerHTML = TK.tab === "list" ? [["all","All"],["open","Open"],["done","Done"]].map(([v, n]) => `<button data-act="tk-st" data-st="${v}" aria-pressed="${TK.st === v}">${n}</button>`).join("") : "";
+  $("#tkStatus").hidden = TK.tab !== "list";
+  if ($("#tkQ").value !== TK.q && document.activeElement !== $("#tkQ")) $("#tkQ").value = TK.q;
+}
+function renderTasks(){
+  const all = taskItems(); renderTasksBar(all);
+  const xs = all.filter(tkMatch), td = todayISO();
+  const nDone = xs.filter(x => x.done).length, nOver = xs.filter(x => !x.done && x.past).length;
+  const nAhead = xs.filter(x => x.done && doneDate(x.b.id) && doneDate(x.b.id) < x.ds).length;
+  const hDone = xs.filter(x => x.done).reduce((a, x) => a + x.b.h, 0), hAll = xs.reduce((a, x) => a + x.b.h, 0);
+  $("#tkSum").innerHTML = `<span><b>${nDone}</b> of ${xs.length} done</span><span><b>${fmtHrs(hDone)}</b> of ${fmtHrs(hAll)} h</span><span><b>${nAhead}</b> done ahead of plan</span><span><b>${nOver}</b> overdue</span>${TK.tab === "list" ? `<button class="link" data-act="tk-jump">Jump to this week ${I.arrow}</button>` : ""}`;
+  $("#tkBody").innerHTML = TK.tab === "list" ? tkList(xs, td) : tkBoard(xs, td);
+  if (TK.tab === "list" && !TK.scrolled){ TK.scrolled = true; tkJump(false); }
+}
+function tkRow(x){
+  const b = x.b;
+  return `<div class="trow ${x.done ? "done" : ""}" data-id="${b.id}">
+    <button class="cb" data-act="tk-done" data-id="${b.id}" aria-pressed="${x.done}" aria-label="Mark done">${I.check}</button>
+    <span class="when"><b>${fmtD(parse(x.ds))}</b>${fmtH(b.s)}–${fmtH(b.e)}</span>
+    <span class="tt"><b>${tkLink(b)}</b><small><i class="sdot sd-${b.k}"></i>${esc(KN[b.k])} · ${fmtHrs(b.h)} h ${tkBadge(x)}</small></span>
+    <span class="acts">${x.done ? "" : `<button class="xbtn" data-act="tk-doing" data-id="${b.id}">${x.doing ? "Pause" : "Start"}</button>`}<button class="ibtn" data-act="open-block" data-id="${b.id}" aria-label="Details">${I.chev}</button></span></div>`;
+}
+function tkList(xs, td){
+  const shown = xs.filter(x => TK.st === "all" || (TK.st === "done" ? x.done : !x.done));
+  if (!shown.length) return `<div class="card"><div class="empty">No tasks match. Clear the search or pick another stream.</div></div>`;
+  const wk = {}; shown.forEach(x => (wk[weekKey(x.ds)] = wk[weekKey(x.ds)] || []).push(x));
+  const cur = weekKey(td);
+  return `<div class="card">` + Object.keys(wk).sort().map(w => { const it = wk[w], d = it.filter(x => x.done).length, th = DAYMAP[it[0].ds].th;
+    return `<div class="wkh" id="tkw-${w}"><h3>Week of ${fmtShort(parse(w))}</h3><span>${esc(th)} · ${d}/${it.length} done</span>${w === cur ? `<span class="tag g">This week</span>` : ""}</div>` + it.map(tkRow).join(""); }).join("") + `</div>`;
+}
+function tkJump(smooth){ const w = weekKey(todayISO()); const el = $("#tkw-" + w) || $$("#tkBody .wkh").find(h => h.id.slice(4) >= w); if (el) el.scrollIntoView({behavior:smooth ? "smooth" : "auto", block:"start"}); }
+function tkCard(x){
+  const b = x.b;
+  return `<div class="kcard ${x.done ? "done" : ""}" draggable="true" data-id="${b.id}">
+    <div class="kt">${tkLink(b)}</div>
+    <div class="km"><i class="sdot sd-${b.k}"></i><span>${esc(KN[b.k])} · ${fmtD(parse(x.ds))}, ${fmtH(b.s)}</span></div>
+    <div class="kf"><button class="cb" data-act="tk-done" data-id="${b.id}" aria-pressed="${x.done}" aria-label="Mark done">${I.check}</button>${tkBadge(x)}<span class="grow"></span>${x.done ? "" : `<button class="xbtn" data-act="tk-doing" data-id="${b.id}">${x.doing ? "Pause" : "Start"}</button>`}</div></div>`;
+}
+function tkBoard(xs, td){
+  const cw = weekKey(td), nw = iso(addDays(parse(cw), 7));
+  const col = {overdue:[], doing:[], week:[], next:[], later:[], done:[]};
+  xs.forEach(x => { if (x.done) col.done.push(x); else if (x.doing) col.doing.push(x); else if (x.past) col.overdue.push(x); else if (weekKey(x.ds) === cw) col.week.push(x); else if (weekKey(x.ds) === nw) col.next.push(x); else col.later.push(x); });
+  col.done.sort((a, b) => String(S.done[b.b.id]).localeCompare(String(S.done[a.b.id])));
+  const meta = [["overdue","Overdue","Past blocks you haven't ticked."],["doing","In progress","Drag a card here, or press Start."],["week","This week",""],["next","Next week",""],["later","Later","Drag one to Done if you finished it early."],["done","Done","Newest first."]];
+  const LIM = 12;
+  return `<div class="board">` + meta.map(([k, n, hint]) => { const it = col[k], lim = TK.more[k] ? it.length : LIM;
+    return `<div class="kcol" data-col="${k}"><h3>${n}<span>${it.length}</span></h3>${!it.length && hint ? `<div class="hint">${hint}</div>` : ""}${it.slice(0, lim).map(tkCard).join("")}${it.length > LIM ? `<button class="kmore" data-act="tk-more" data-col="${k}">${TK.more[k] ? "Show fewer" : `Show all ${it.length}`}</button>` : ""}</div>`; }).join("") + `</div>`;
+}
+function tkSetDone(id, on){ const n = Object.assign({}, S.done); if (on){ if (!n[id]) n[id] = new Date().toISOString(); } else delete n[id]; S.done = n; save("progress/done", {ids:S.done}); if (on && S.doing[id]) tkSetDoing(id, false); }
+function tkSetDoing(id, on){ const n = Object.assign({}, S.doing); if (on) n[id] = new Date().toISOString(); else delete n[id]; S.doing = n; save("progress/doing", {ids:S.doing}); }
+function tkDrop(id, colk){
+  if (colk === "done"){ tkSetDone(id, true); toast("Marked done today"); }
+  else if (colk === "doing"){ if (S.done[id]) tkSetDone(id, false); tkSetDoing(id, true); }
+  else { if (S.done[id]) tkSetDone(id, false); if (S.doing[id]) tkSetDoing(id, false); toast("Back on its planned date"); }
+  renderAll();
+}
+document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest(".kcard"); if (!c) return; e.dataTransfer.setData("text/plain", c.dataset.id); e.dataTransfer.effectAllowed = "move"; c.classList.add("dragging"); });
+document.addEventListener("dragend", e => { $$(".kcard.dragging").forEach(c => c.classList.remove("dragging")); $$(".kcol.over").forEach(c => c.classList.remove("over")); });
+document.addEventListener("dragover", e => { const c = e.target.closest && e.target.closest(".kcol"); if (!c) return; e.preventDefault(); $$(".kcol.over").forEach(x => x !== c && x.classList.remove("over")); c.classList.add("over"); });
+document.addEventListener("drop", e => { const c = e.target.closest && e.target.closest(".kcol"); if (!c) return; e.preventDefault(); c.classList.remove("over"); const id = e.dataTransfer.getData("text/plain"); if (id && findBlock(id)) tkDrop(id, c.dataset.col); });
+document.addEventListener("input", e => { if (e.target.id === "tkQ"){ TK.q = e.target.value.trim(); renderTasks(); } });
+
 /* ===== orchestration ===== */
 function renderAll(){
   MOVES = travelMoves(); renderUpNext();
   const v = UI.view;
-  if (v === "today") renderToday(); if (v === "plan") renderPlan(); if (v === "projects") renderProjects(); if (v === "career") renderCareer(); if (v === "review") renderReview(); if (v === "settings") renderSettings(); if (v === "practice"){ renderSnips(); renderPyList(); }
+  if (v === "today") renderToday(); if (v === "plan") renderPlan(); if (v === "tasks") renderTasks(); if (v === "projects") renderProjects(); if (v === "career") renderCareer(); if (v === "review") renderReview(); if (v === "settings") renderSettings(); if (v === "practice"){ renderSnips(); renderPyList(); }
   if (!$("#drawer").hidden) openDrawer($("#drawer").dataset.id);
 }
 function show(v){ UI.view = v; try { localStorage.setItem("cc4.view", v); } catch(e){} $$(".view").forEach(x => x.hidden = x.id !== "view-" + v); $$(".nav").forEach(b => b.dataset.view === v ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current")); if (v === "practice" && !$("#code").value) renderEx(); if (v === "practice") renderEx(true); renderAll(); window.scrollTo({top:0}); }
@@ -1032,7 +1178,14 @@ document.addEventListener("click", e => {
   const a = e.target.closest("[data-act]"); if (!a) return; const act = a.dataset.act;
   const flip = (obj, key) => { const n = Object.assign({}, obj); if (n[key]) delete n[key]; else n[key] = new Date().toISOString(); return n; };
   switch (act){
-    case "toggle-done": S.done = flip(S.done, a.dataset.id); save("progress/done", {ids:S.done}); renderAll(); break;
+    case "tk-tab": TK.tab = a.dataset.tab; tkSave(); TK.scrolled = TK.tab !== "list"; renderTasks(); break;
+    case "tk-k": TK.k = a.dataset.k; tkSave(); renderTasks(); break;
+    case "tk-st": TK.st = a.dataset.st; tkSave(); renderTasks(); break;
+    case "tk-more": TK.more[a.dataset.col] = !TK.more[a.dataset.col]; renderTasks(); break;
+    case "tk-jump": tkJump(true); break;
+    case "tk-done": { const on = !S.done[a.dataset.id]; tkSetDone(a.dataset.id, on); renderAll(); if (on) toast("Marked done today"); break; }
+    case "tk-doing": tkSetDoing(a.dataset.id, !S.doing[a.dataset.id]); renderAll(); break;
+    case "toggle-done": S.done = flip(S.done, a.dataset.id); save("progress/done", {ids:S.done}); if (S.done[a.dataset.id] && S.doing[a.dataset.id]) tkSetDoing(a.dataset.id, false); renderAll(); break;
     case "open-block": openDrawer(a.dataset.id); break;
     case "close-drawer": closeDrawer(); break;
     case "start-focus": P.blockId = a.dataset.id; setMode("focus"); startP(); closeDrawer(); if (UI.view !== "today") show("today"); $("#timer").scrollIntoView({behavior:"smooth", block:"center"}); toast("Focus started"); break;
@@ -1117,7 +1270,7 @@ show(UI.view); setSync("connecting");
     "progress/counters": d => S.counters = Object.assign({dsa:0, mocks:0, apps:0}, d),
     "progress/travel": d => S.travel = d.days || {}, "settings/pomodoro": d => S.pomo = Object.assign({focus:25, short:5, long:15}, d),
     "playground/snippets": d => S.snippets = d.items || [], "playground/drills": d => { S.drills = d.passed || {}; if (UI.view === "practice") renderEx(true); },
-    "career/prep": d => S.prep = d.ids || {}
+    "career/prep": d => S.prep = d.ids || {}, "progress/doing": d => S.doing = d.ids || {}
   };
   Object.entries(docs).forEach(([p, apply]) => DB.doc(p).onSnapshot(s => { if (busy(p) || s.metadata.hasPendingWrites) return; if (s.exists){ apply(s.data()); rr(); } }, onErr));
   const cols = {sessions:"sessions", projects:"proj", reviews:"reviews", checkins:"checkins", opps:"opps"};
